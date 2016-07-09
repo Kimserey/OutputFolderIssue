@@ -68,11 +68,20 @@ module Site =
 
 module SelfHostedServer =
 
+    open System
+    open System.IO
     open global.Owin
     open Microsoft.Owin.Hosting
     open Microsoft.Owin.StaticFiles
     open Microsoft.Owin.FileSystems
     open WebSharper.Owin
+
+    let buildFolder =
+        #if DEBUG
+        "Debug"
+        #else
+        "Release"
+        #endif
 
     [<EntryPoint>]
     let Main args =
@@ -82,11 +91,14 @@ module SelfHostedServer =
             | [| url |] -> "..\..", url
             | [| |] -> "..\..", "http://localhost:9000/"
             | _ -> eprintfn "Usage: OutputFolderIssue ROOT_DIRECTORY URL"; exit 1
+
+        let binDirectory = Path.Combine(rootDirectory, "bin", buildFolder)
+
         use server = WebApp.Start(url, fun appB ->
             appB.UseStaticFiles(
                     StaticFileOptions(
                         FileSystem = PhysicalFileSystem(rootDirectory)))
-                .UseSitelet(rootDirectory, Site.Main)
+                .UseSitelet(rootDirectory, Site.Main, binDirectory)
             |> ignore)
         stdout.WriteLine("Serving {0}", url)
         stdin.ReadLine() |> ignore

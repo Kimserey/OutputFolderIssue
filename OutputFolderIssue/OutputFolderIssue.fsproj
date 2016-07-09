@@ -194,8 +194,4 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\WebSharper.3.6.11.234\build\WebSharper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WebSharper.3.6.11.234\build\WebSharper.targets'))" />
   </Target>
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>
