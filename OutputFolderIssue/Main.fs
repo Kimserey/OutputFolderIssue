@@ -79,8 +79,8 @@ module SelfHostedServer =
         let rootDirectory, url =
             match args with
             | [| rootDirectory; url |] -> rootDirectory, url
-            | [| url |] -> "..", url
-            | [| |] -> "..", "http://localhost:9000/"
+            | [| url |] -> "..\..", url
+            | [| |] -> "..\..", "http://localhost:9000/"
             | _ -> eprintfn "Usage: OutputFolderIssue ROOT_DIRECTORY URL"; exit 1
         use server = WebApp.Start(url, fun appB ->
             appB.UseStaticFiles(
